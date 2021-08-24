@@ -30,4 +30,4 @@ app.use('/files', express.static(resolve(__dirname, '..', 'tmp')));
 app.use(express.json());
 app.use(routes);
 
-server.listen(3333, () => console.log('Server Running...'));//hello
+server.listen(process.env.PORT || 3333, () => console.log('Server Running...'));//hello
