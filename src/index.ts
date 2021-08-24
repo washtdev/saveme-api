@@ -18,8 +18,6 @@ export const io = new socketIo.Server(server, {
   }
 });
 
-console.log('tá funcionando heheheheheh')
-
 mongoose.connect(process.env["DATABASE_CONNECT"]!, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -28,7 +26,10 @@ mongoose.connect(process.env["DATABASE_CONNECT"]!, {
 }).then(() => console.log('MongoDB Connected!'));
 
 app.use(cors({
-  origin: 'https://saveme-school.vercel.app'
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 app.use('/files', express.static(resolve(__dirname, '..', 'tmp')));
 app.use(express.json());
