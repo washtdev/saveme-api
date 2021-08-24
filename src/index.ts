@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import * as socketIo from "socket.io";
 import cors from "cors";
 
-import https from "https";
+import https from "http";
 import { resolve } from "path";
 
 import "dotenv/config";
