@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import ActivityModel from "@models/ActivityModel";
-import { IActivityModel } from "@models/ActivityModel";
+import ActivityModel from "../models/ActivityModel";
+import { IActivityModel } from "../models/ActivityModel";
 
 type IUserId = Request & {
     userId?: string

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 
-import MailConfig from "@services/MailConfig";
+import MailConfig from "../services/MailConfig";
 
-import TokenModel from "@models/TokenModel";
-import UserModel from "@models/UserModel";
+import TokenModel from "../models/TokenModel";
+import UserModel from "../models/UserModel";
 
 import "dotenv/config";
 

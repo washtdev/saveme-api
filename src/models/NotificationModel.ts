@@ -1,7 +1,7 @@
 import { Document, Schema, model } from "mongoose";
 
-import { IUserModel } from '@models/UserModel';
-import { IActivityModel } from '@models/ActivityModel';
+import { IUserModel } from './UserModel';
+import { IActivityModel } from './ActivityModel';
 
 export interface INotificationModel extends Document {
     author: IUserModel;

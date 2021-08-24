@@ -1,14 +1,14 @@
 // @ts-ignore
 import { Router, Request, Response } from "express";
 
-import UserController from "@controllers/UserController";
-import ActivityController from "@controllers/ActivityController";
-import TokenController from "@controllers/TokenController";
-import AuthController from "@controllers/AuthControllers";
-import FileController from "@controllers/FileController";
-import NotificationController from "@controllers/NotificationController";
+import UserController from "./controllers/UserController";
+import ActivityController from "./controllers/ActivityController";
+import TokenController from "./controllers/TokenController";
+import AuthController from "./controllers/AuthControllers";
+import FileController from "./controllers/FileController";
+import NotificationController from "./controllers/NotificationController";
 
-import Multer from "@services/Multer";
+import Multer from "./services/Multer";
 
 const routes = Router();
 

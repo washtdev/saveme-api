@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 
 import bcrypt from 'bcrypt';
 
-import UserModel from "@models/UserModel";
-import TokenModel, { ITokenModel } from "@models/TokenModel";
+import UserModel from "../models/UserModel";
+import TokenModel, { ITokenModel } from "../models/TokenModel";
 
 type IUserBody = {
 	username: string,

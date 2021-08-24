@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
-import NotificationModel from "@models/NotificationModel";
+import NotificationModel from "../models/NotificationModel";
 
-import { ITokenRequest } from "@controllers/AuthControllers";
+import { ITokenRequest } from "./AuthControllers";
 
 export default async function NotificationController(request: Request, response: Response){
     const author = request.userId;

@@ -3,8 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-import UserModel from "@models/UserModel";
-import { IUserModel } from "@models/UserModel";
+import UserModel from "../models/UserModel";
+import { IUserModel } from "../models/UserModel";
 
 import "dotenv/config";
 

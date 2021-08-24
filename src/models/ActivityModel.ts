@@ -1,6 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 
-import { IUserModel } from "@models/UserModel";
+import { IUserModel } from "./UserModel";
 
 export interface IActivityModel extends Document {
 	user: IUserModel;

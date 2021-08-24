@@ -3,14 +3,14 @@ import { ParsedQs } from "qs";
 import { unlinkSync } from "fs";
 import { resolve } from "path";
 
-import { io } from "@src/index";
+import { io } from "../index";
 
-import { ITokenRequest } from "@controllers/AuthControllers";
+import { ITokenRequest } from "./AuthControllers";
 
-import ActivityModel from "@models/ActivityModel";
-import { IActivityModel } from "@models/ActivityModel";
-import UserModel, { IUserModel } from "@models/UserModel";
-import NotificationModel from "@src/models/NotificationModel";
+import ActivityModel from "../models/ActivityModel";
+import { IActivityModel } from "../models/ActivityModel";
+import UserModel, { IUserModel } from "../models/UserModel";
+import NotificationModel from "../models/NotificationModel";
 
 type IActivityIndexQuery = ParsedQs & {
 	title?: string,
