@@ -27,12 +27,12 @@ var express_1 = __importDefault(require("express"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var socketIo = __importStar(require("socket.io"));
 var cors_1 = __importDefault(require("cors"));
-var http_1 = __importDefault(require("http"));
+var https_1 = __importDefault(require("https"));
 var path_1 = require("path");
 require("dotenv/config");
 var routes_1 = __importDefault(require("./routes"));
 var app = express_1.default();
-var server = http_1.default.createServer(app);
+var server = https_1.default.createServer(app);
 exports.io = new socketIo.Server(server, {
     cors: {
         origin: '*'
@@ -48,4 +48,4 @@ app.use(cors_1.default());
 app.use('/files', express_1.default.static(path_1.resolve(__dirname, '..', 'tmp')));
 app.use(express_1.default.json());
 app.use(routes_1.default);
-server.listen(3333, function () { return console.log('Server Running...'); });
+server.listen(3333, function () { return console.log('Server Running...'); }); //hello
