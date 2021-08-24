@@ -25,7 +25,9 @@ mongoose.connect(process.env["DATABASE_CONNECT"]!, {
   useCreateIndex: true 
 }).then(() => console.log('MongoDB Connected!'));
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://saveme-school.vercel.app'
+}));
 app.use('/files', express.static(resolve(__dirname, '..', 'tmp')));
 app.use(express.json());
 app.use(routes);
