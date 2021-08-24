@@ -25,19 +25,12 @@ mongoose.connect(process.env["DATABASE_CONNECT"]!, {
   useCreateIndex: true 
 }).then(() => console.log('MongoDB Connected!'));
 
-/*cors({
+app.use(cors({
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   preflightContinue: false,
   optionsSuccessStatus: 204
-})*/
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  app.use(cors());
-
-  next();
-});
+}));
 app.use('/files', express.static(resolve(__dirname, '..', 'tmp')));
 app.use(express.json());
 app.use(routes);
