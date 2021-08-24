@@ -27,7 +27,7 @@ mongoose.connect(process.env["DATABASE_CONNECT"]!, {
 
 app.use(cors({
   origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   preflightContinue: false,
   optionsSuccessStatus: 204
 }));
