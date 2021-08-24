@@ -28,7 +28,7 @@ routes.get('/notifications', AuthController.auth, NotificationController);
 
 routes.post('/token', TokenController);
 
-routes.post('/upload/:id', AuthController.auth, FileController, Multer.single('file'), (request: Request, response: Response) => response.status(204).send());
+routes.post('/upload/:id', AuthController.auth, FileController, Multer.single('file'), (request: Request, response: Response) => response.sendStatus(204));
 
 export default routes;
 
