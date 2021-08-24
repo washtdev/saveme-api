@@ -24,6 +24,6 @@ routes.patch('/activity/like/:id', AuthControllers_1.default.auth, ActivityContr
 routes.delete('/activity/:id', AuthControllers_1.default.auth, ActivityController_1.default.delete);
 routes.get('/notifications', AuthControllers_1.default.auth, NotificationController_1.default);
 routes.post('/token', TokenController_1.default);
-routes.post('/upload/:id', AuthControllers_1.default.auth, FileController_1.default, Multer_1.default.single('file'), function (request, response) { return response.status(204).send(); });
+routes.post('/upload/:id', AuthControllers_1.default.auth, FileController_1.default, Multer_1.default.single('file'), function (request, response) { return response.sendStatus(204); });
 exports.default = routes;
 // apagar atividades periodicamente
