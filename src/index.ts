@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import * as socketIo from "socket.io";
 import cors from "cors";
 
-import http from "http";
+import https from "https";
 import { resolve } from "path";
 
 import "dotenv/config";
@@ -11,7 +11,7 @@ import "dotenv/config";
 import routes from "./routes";
 
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(app);
 export const io = new socketIo.Server(server, {
   cors: {
     origin: '*'
