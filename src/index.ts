@@ -26,6 +26,7 @@ mongoose.connect(process.env["DATABASE_CONNECT"]!, {
 }).then(() => console.log('MongoDB Connected!'));
 
 app.use(cors({
+  credentials: true,
   origin: '*'
 }));
 app.use('/files', express.static(resolve(__dirname, '..', 'tmp')));
