@@ -4,7 +4,7 @@ import NotificationModel from "@models/NotificationModel";
 
 import { ITokenRequest } from "@controllers/AuthControllers";
 
-export default async function NotificationController(request: ITokenRequest, response: Response){
+export default async function NotificationController(request: Request, response: Response){
     const author = request.userId;
 
     const notifications = await NotificationModel.find().where('author').equals(author).populate('author').populate('liked_user').populate('activity');

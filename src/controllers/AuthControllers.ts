@@ -44,7 +44,7 @@ class AuthController {
         return response.json({ user, token });
     }
 
-    async auth(request: ITokenRequest, response: Response, next: NextFunction){
+    async auth(request: Request, response: Response, next: NextFunction){
         const { authorization } = request.headers;
 
         if(!authorization){
