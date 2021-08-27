@@ -135,7 +135,7 @@ class ActivityController {
 			/*unlinkSync(resolve(__dirname, '..', '..', 'tmp', activity._id + '.pdf'));*/
 			await s3.deleteObject({
 				Bucket: 'saveme',
-				key: activity._id + '.pdf'
+				Key: activity._id + '.pdf'
 			});
 		}
 
@@ -207,7 +207,7 @@ class ActivityController {
 		if(activity.haveFile){
 			await s3.deleteObject({
 				Bucket: 'saveme',
-				key: activity._id + '.pdf'
+				Key: activity._id + '.pdf'
 			});
 		}
 		
