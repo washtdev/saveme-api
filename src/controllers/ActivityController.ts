@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { ParsedQs } from "qs";
-import { unlinkSync } from "fs";
-import { resolve } from "path";
+import aws from "aws-sdk";
 
 import { io } from "../index";
 
@@ -11,6 +10,7 @@ import ActivityModel from "../models/ActivityModel";
 import { IActivityModel } from "../models/ActivityModel";
 import UserModel, { IUserModel } from "../models/UserModel";
 import NotificationModel from "../models/NotificationModel";
+import { DeleteObjectRequest } from "aws-sdk/clients/clouddirectory";
 
 type IActivityIndexQuery = ParsedQs & {
 	title?: string,
@@ -34,6 +34,8 @@ type IActivityBody = {
 type IUserId = Request & {
 	userId?: string
 }
+
+const s3 = new aws.S3();
 
 class ActivityController {
 	async index(request: Request, response: Response) {
@@ -121,12 +123,20 @@ class ActivityController {
 
 		const activity = await ActivityModel.findById(id).populate('user');
 
+		if(!activity){
+			return response.status(404).json({ message: 'activity not found!' });
+		}
+
 		if(!(activity.user._id == userId)){
 			return response.status(403).json({ message: 'unauthorized user to update activity' });
 		}
 		
 		if(activity.haveFile){
-			unlinkSync(resolve(__dirname, '..', '..', 'tmp', activity._id + '.pdf'));
+			/*unlinkSync(resolve(__dirname, '..', '..', 'tmp', activity._id + '.pdf'));*/
+			await s3.deleteObject({
+				Bucket: 'saveme',
+				key: activity._id + '.pdf'
+			});
 		}
 
 		const previous_activity = await ActivityModel.findByIdAndUpdate(id, body).populate('user');
@@ -140,7 +150,7 @@ class ActivityController {
 		const { id } = request.params as IActivityParams;
 		const { userId } = request as IUserId;
 
-		const { likes } = await ActivityModel.findById(id);
+		const { likes } = await ActivityModel.findById(id) as IActivityModel;
 
 		const activity_updated = await ActivityModel.findByIdAndUpdate(id, likes.includes(userId) ? { $pull: { likes: userId } } : { $push: { likes: userId } }).populate('user');
 
@@ -172,10 +182,6 @@ class ActivityController {
 
 		activity_updated.user.password = undefined;
 
-		for(const value of activity_updated.likes){
-			value.password = undefined;
-		}
-
 		return response.json({ 
 			message: 'activity updated successfully!',
 			previous_activity: activity_updated
@@ -199,7 +205,10 @@ class ActivityController {
 		await ActivityModel.findByIdAndDelete(id);
 
 		if(activity.haveFile){
-			unlinkSync(resolve(__dirname, '..', '..', 'tmp', id + '.pdf'));
+			await s3.deleteObject({
+				Bucket: 'saveme',
+				key: activity._id + '.pdf'
+			});
 		}
 		
 		io.emit('delete activity', activity);

@@ -8,6 +8,8 @@ import AuthController from "./controllers/AuthControllers";
 import FileController from "./controllers/FileController";
 import NotificationController from "./controllers/NotificationController";
 
+import ActivityModel from './models/ActivityModel';
+
 import Multer from "./services/Multer";
 
 const routes = Router();
@@ -29,7 +31,13 @@ routes.get('/notifications', AuthController.auth, NotificationController);
 
 routes.post('/token', TokenController);
 
-routes.post('/upload/:id', AuthController.auth, FileController, Multer.single('file'), (request: Request, response: Response) => response.sendStatus(204));
+routes.post('/upload/:id', AuthController.auth, FileController, Multer.single('file'), async (request: Request, response: Response) => {
+    const { userId, location } = request;
+
+    await ActivityModel.findByIdAndUpdate(userId, { url: location });
+    
+    response.sendStatus(204);
+});
 
 export default routes;
 

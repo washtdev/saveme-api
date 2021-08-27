@@ -5,10 +5,11 @@ import { IUserModel } from "./UserModel";
 export interface IActivityModel extends Document {
 	user: IUserModel;
 	title: string;
-	description: string;
+	description?: string;
 	subject: string;
 	haveFile: Boolean;
-	likes: Array<IUserModel>;
+	url?: string;
+	likes: Array<string>;
 	_id: string;
 }
 
@@ -35,6 +36,8 @@ const ActivityModel = new Schema({
 		required: true
 	},
 
+	url: String,
+
 	likes: [
 		{
 			type: Schema.Types.ObjectId,
@@ -43,4 +46,4 @@ const ActivityModel = new Schema({
 	]
 }, { timestamps: true });
 
-export default model("Activity", ActivityModel);
+export default model<IActivityModel>("Activity", ActivityModel);

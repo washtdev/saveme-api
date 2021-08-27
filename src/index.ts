@@ -31,7 +31,7 @@ app.use(cors({
   preflightContinue: false,
   optionsSuccessStatus: 204
 }));
-app.use('/files', express.static(resolve(__dirname, '..', 'tmp')));
+//app.use('/files', express.static(resolve(__dirname, '..', 'tmp')));
 app.use(express.json());
 app.use(routes);
 
