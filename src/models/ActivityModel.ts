@@ -8,7 +8,7 @@ export interface IActivityModel extends Document {
 	description?: string;
 	subject: string;
 	haveFile: Boolean;
-	url: string;
+	url?: string;
 	likes: Array<string>;
 	_id: string;
 }
@@ -36,10 +36,7 @@ const ActivityModel = new Schema({
 		required: true
 	},
 
-	url: {
-		type: String,
-		required: true
-	},
+	url: String,
 
 	likes: [
 		{
