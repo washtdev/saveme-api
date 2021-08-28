@@ -11,7 +11,7 @@ export default async function(request: Request, response: Response, next: NextFu
     const { userId } = request as IUserId;
     const { id } = request.params;
 
-    const activity = await ActivityModel.findById(id) as IActivityModel;
+    const activity = await ActivityModel.findById(id).populate('user') as IActivityModel;
 
     if(!activity){
         return response.status(404).json({ message: 'activity not found!' });
