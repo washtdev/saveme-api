@@ -134,10 +134,10 @@ class ActivityController {
 		
 		if(activity.haveFile){
 			/*unlinkSync(resolve(__dirname, '..', '..', 'tmp', activity._id + '.pdf'));*/
-			await s3.deleteObject({
+			s3.deleteObject({
 				Bucket: 'saveme-school',
 				Key: activity._id + '.pdf'
-			});
+			}).promise();
 		}
 
 		const previous_activity = await ActivityModel.findByIdAndUpdate(id, body).populate('user');
@@ -206,10 +206,10 @@ class ActivityController {
 		await ActivityModel.findByIdAndDelete(id);
 
 		if(activity.haveFile){
-			await s3.deleteObject({
+			s3.deleteObject({
 				Bucket: 'saveme-school',
 				Key: activity._id + '.pdf'
-			});
+			}).promise();
 		}
 		
 		io.emit('delete activity', activity);
