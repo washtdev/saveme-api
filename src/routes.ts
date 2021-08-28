@@ -31,14 +31,14 @@ routes.get('/notifications', AuthController.auth, NotificationController);
 
 routes.post('/token', TokenController);
 
-/*routes.post('/upload/:id', AuthController.auth, FileController, Multer.single('file'), async (request: Request, response: Response) => {
+routes.post('/upload/:id', AuthController.auth, FileController, Multer.single('file'), async (request: Request, response: Response) => {
     const { userId } = request;
     const { location } = request.file;
     
     await ActivityModel.findByIdAndUpdate(userId, { url: location });
     
     response.sendStatus(204);
-});*/
+});
 
 export default routes;
 
