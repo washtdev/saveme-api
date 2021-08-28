@@ -40,8 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var UserModel_1 = __importDefault(require("@models/UserModel"));
-var TokenModel_1 = __importDefault(require("@models/TokenModel"));
+var UserModel_1 = __importDefault(require("../models/UserModel"));
+var TokenModel_1 = __importDefault(require("../models/TokenModel"));
 var UserController = /** @class */ (function () {
     function UserController() {
     }

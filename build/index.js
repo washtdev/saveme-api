@@ -27,12 +27,11 @@ var express_1 = __importDefault(require("express"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var socketIo = __importStar(require("socket.io"));
 var cors_1 = __importDefault(require("cors"));
-var https_1 = __importDefault(require("https"));
-var path_1 = require("path");
+var http_1 = __importDefault(require("http"));
 require("dotenv/config");
 var routes_1 = __importDefault(require("./routes"));
 var app = express_1.default();
-var server = https_1.default.createServer(app);
+var server = http_1.default.createServer(app);
 exports.io = new socketIo.Server(server, {
     cors: {
         origin: '*'
@@ -44,8 +43,13 @@ mongoose_1.default.connect(process.env["DATABASE_CONNECT"], {
     useFindAndModify: false,
     useCreateIndex: true
 }).then(function () { return console.log('MongoDB Connected!'); });
-app.use(cors_1.default());
-app.use('/files', express_1.default.static(path_1.resolve(__dirname, '..', 'tmp')));
+app.use(cors_1.default({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+}));
+//app.use('/files', express.static(resolve(__dirname, '..', 'tmp')));
 app.use(express_1.default.json());
 app.use(routes_1.default);
-server.listen(3333, function () { return console.log('Server Running...'); }); //hello
+server.listen(process.env.PORT || 3333, function () { return console.log('Server Running...'); }); //hello

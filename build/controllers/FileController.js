@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ActivityModel_1 = __importDefault(require("@models/ActivityModel"));
+var ActivityModel_1 = __importDefault(require("../models/ActivityModel"));
 function default_1(request, response, next) {
     return __awaiter(this, void 0, void 0, function () {
         var userId, id, activity;

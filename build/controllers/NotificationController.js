@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var NotificationModel_1 = __importDefault(require("@models/NotificationModel"));
+var NotificationModel_1 = __importDefault(require("../models/NotificationModel"));
 function NotificationController(request, response) {
     return __awaiter(this, void 0, void 0, function () {
         var author, notifications;

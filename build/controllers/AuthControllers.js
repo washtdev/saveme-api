@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var UserModel_1 = __importDefault(require("@models/UserModel"));
+var UserModel_1 = __importDefault(require("../models/UserModel"));
 require("dotenv/config");
 ;
 var AuthController = /** @class */ (function () {

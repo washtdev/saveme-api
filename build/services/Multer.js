@@ -54,15 +54,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var multer_1 = __importStar(require("multer"));
+var aws_sdk_1 = __importDefault(require("aws-sdk"));
+var multer_s3_1 = __importDefault(require("multer-s3"));
 var path_1 = require("path");
-exports.default = multer_1.default({
-    dest: path_1.resolve(__dirname, '..', '..', 'tmp'),
-    limits: {
-        fileSize: 2 * 1024 * 1024
-    },
-    storage: multer_1.diskStorage({
+require("dotenv/config");
+var storageTypes = {
+    'local': multer_1.diskStorage({
         filename: function (request, file, callback) { return __awaiter(void 0, void 0, void 0, function () {
             var id;
             return __generator(this, function (_a) {
@@ -75,6 +77,27 @@ exports.default = multer_1.default({
             callback(null, path_1.resolve(__dirname, '..', '..', 'tmp'));
         }
     }),
+    's3': multer_s3_1.default({
+        s3: new aws_sdk_1.default.S3(),
+        bucket: 'saveme',
+        contentType: multer_s3_1.default.AUTO_CONTENT_TYPE,
+        acl: 'public-read',
+        key: function (request, file, callback) { return __awaiter(void 0, void 0, void 0, function () {
+            var id;
+            return __generator(this, function (_a) {
+                id = request.params.id;
+                callback(null, id + '.pdf');
+                return [2 /*return*/];
+            });
+        }); },
+    })
+};
+exports.default = multer_1.default({
+    dest: path_1.resolve(__dirname, '..', '..', 'tmp'),
+    limits: {
+        fileSize: 2 * 1024 * 1024
+    },
+    storage: storageTypes['s3'],
     fileFilter: function (request, file, callback) {
         var AllowedMimes = [
             'application/pdf'

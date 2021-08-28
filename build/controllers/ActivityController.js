@@ -39,12 +39,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs_1 = require("fs");
-var path_1 = require("path");
-var index_1 = require("@src/index");
-var ActivityModel_1 = __importDefault(require("@models/ActivityModel"));
-var UserModel_1 = __importDefault(require("@models/UserModel"));
-var NotificationModel_1 = __importDefault(require("@src/models/NotificationModel"));
+var aws_sdk_1 = __importDefault(require("aws-sdk"));
+var index_1 = require("../index");
+var ActivityModel_1 = __importDefault(require("../models/ActivityModel"));
+var UserModel_1 = __importDefault(require("../models/UserModel"));
+var NotificationModel_1 = __importDefault(require("../models/NotificationModel"));
+var s3 = new aws_sdk_1.default.S3();
 var ActivityController = /** @class */ (function () {
     function ActivityController() {
     }
@@ -126,6 +126,7 @@ var ActivityController = /** @class */ (function () {
                                 description: description,
                                 subject: subject,
                                 haveFile: haveFile,
+                                url: '',
                                 likes: []
                             })];
                     case 1:
@@ -158,14 +159,24 @@ var ActivityController = /** @class */ (function () {
                         return [4 /*yield*/, ActivityModel_1.default.findById(id).populate('user')];
                     case 1:
                         activity = _a.sent();
+                        if (!activity) {
+                            return [2 /*return*/, response.status(404).json({ message: 'activity not found!' })];
+                        }
                         if (!(activity.user._id == userId)) {
                             return [2 /*return*/, response.status(403).json({ message: 'unauthorized user to update activity' })];
                         }
-                        if (activity.haveFile) {
-                            fs_1.unlinkSync(path_1.resolve(__dirname, '..', '..', 'tmp', activity._id + '.pdf'));
-                        }
-                        return [4 /*yield*/, ActivityModel_1.default.findByIdAndUpdate(id, body).populate('user')];
+                        if (!activity.haveFile) return [3 /*break*/, 3];
+                        /*unlinkSync(resolve(__dirname, '..', '..', 'tmp', activity._id + '.pdf'));*/
+                        return [4 /*yield*/, s3.deleteObject({
+                                Bucket: 'saveme',
+                                Key: activity._id + '.pdf'
+                            })];
                     case 2:
+                        /*unlinkSync(resolve(__dirname, '..', '..', 'tmp', activity._id + '.pdf'));*/
+                        _a.sent();
+                        _a.label = 3;
+                    case 3: return [4 /*yield*/, ActivityModel_1.default.findByIdAndUpdate(id, body).populate('user')];
+                    case 4:
                         previous_activity = _a.sent();
                         index_1.io.emit('update activity', activity);
                         return [2 /*return*/, response.json(activity)];
@@ -175,55 +186,51 @@ var ActivityController = /** @class */ (function () {
     };
     ActivityController.prototype.like = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, userId, likes, activity_updated, liked_user, user, like, _i, _a, value;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var id, userId, likes, activity_updated, liked_user, user, like;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         id = request.params.id;
                         userId = request.userId;
                         return [4 /*yield*/, ActivityModel_1.default.findById(id)];
                     case 1:
-                        likes = (_b.sent()).likes;
+                        likes = (_a.sent()).likes;
                         return [4 /*yield*/, ActivityModel_1.default.findByIdAndUpdate(id, likes.includes(userId) ? { $pull: { likes: userId } } : { $push: { likes: userId } }).populate('user')];
                     case 2:
-                        activity_updated = _b.sent();
+                        activity_updated = _a.sent();
                         if (!activity_updated) {
                             return [2 /*return*/, response.status(400).json({ message: 'failed to update activity!' })];
                         }
                         return [4 /*yield*/, UserModel_1.default.findById(userId)];
                     case 3:
-                        liked_user = _b.sent();
+                        liked_user = _a.sent();
                         if (!likes.includes(userId)) return [3 /*break*/, 6];
                         return [4 /*yield*/, UserModel_1.default.findById(activity_updated.user._id)];
                     case 4:
-                        user = (_b.sent());
+                        user = (_a.sent());
                         user.likes--;
                         return [4 /*yield*/, UserModel_1.default.findByIdAndUpdate(user._id, { likes: user.likes })];
                     case 5:
-                        _b.sent();
+                        _a.sent();
                         return [3 /*break*/, 10];
                     case 6: return [4 /*yield*/, UserModel_1.default.findById(activity_updated.user._id)];
                     case 7:
-                        user = (_b.sent());
+                        user = (_a.sent());
                         user.likes++;
                         return [4 /*yield*/, UserModel_1.default.findByIdAndUpdate(user._id, { likes: user.likes })];
                     case 8:
-                        _b.sent();
+                        _a.sent();
                         return [4 /*yield*/, NotificationModel_1.default.create({
                                 author: user._id,
                                 liked_user: liked_user._id,
                                 activity: activity_updated._id
                             })];
                     case 9:
-                        like = _b.sent();
+                        like = _a.sent();
                         index_1.io.emit('like', like);
-                        _b.label = 10;
+                        _a.label = 10;
                     case 10:
                         activity_updated.user.password = undefined;
-                        for (_i = 0, _a = activity_updated.likes; _i < _a.length; _i++) {
-                            value = _a[_i];
-                            value.password = undefined;
-                        }
                         return [2 /*return*/, response.json({
                                 message: 'activity updated successfully!',
                                 previous_activity: activity_updated
@@ -252,9 +259,15 @@ var ActivityController = /** @class */ (function () {
                         return [4 /*yield*/, ActivityModel_1.default.findByIdAndDelete(id)];
                     case 2:
                         _a.sent();
-                        if (activity.haveFile) {
-                            fs_1.unlinkSync(path_1.resolve(__dirname, '..', '..', 'tmp', id + '.pdf'));
-                        }
+                        if (!activity.haveFile) return [3 /*break*/, 4];
+                        return [4 /*yield*/, s3.deleteObject({
+                                Bucket: 'saveme',
+                                Key: activity._id + '.pdf'
+                            })];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4:
                         index_1.io.emit('delete activity', activity);
                         return [2 /*return*/, response.status(204).send()];
                 }

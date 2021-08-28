@@ -39,9 +39,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var MailConfig_1 = __importDefault(require("@services/MailConfig"));
-var TokenModel_1 = __importDefault(require("@models/TokenModel"));
-var UserModel_1 = __importDefault(require("@models/UserModel"));
+var MailConfig_1 = __importDefault(require("../services/MailConfig"));
+var TokenModel_1 = __importDefault(require("../models/TokenModel"));
+var UserModel_1 = __importDefault(require("../models/UserModel"));
 require("dotenv/config");
 function default_1(request, response) {
     return __awaiter(this, void 0, void 0, function () {
