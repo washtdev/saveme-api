@@ -21,10 +21,10 @@ export default async function(request: Request, response: Response, next: NextFu
         return response.status(400).json({ message: 'activity not have file!' });
     }
 
-    if(!(activity.user._id == userId)){
+    /*if(!(activity.user._id == userId)){
         console.log(activity.user._id + ' and ' + userId)
         return response.status(403).json({ message: 'unauthorized file submission!' });
-    }
+    }*/
 
     return next();
 }
