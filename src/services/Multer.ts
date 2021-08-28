@@ -20,7 +20,7 @@ const storageTypes = {
     }),
     's3': multerS3({
         s3: new aws.S3(),
-        bucket: 'saveme',
+        bucket: 'saveme-school',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read',
         key: async (request: Request, file: Express.Multer.File, callback) => {
