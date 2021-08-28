@@ -41,5 +41,3 @@ routes.post('/upload/:id', AuthController.auth, FileController, Multer.single('f
 });
 
 export default routes;
-
-// apagar atividades periodicamente
