@@ -22,6 +22,7 @@ export default async function(request: Request, response: Response, next: NextFu
     }
 
     if(!(activity.user._id == userId)){
+        console.log(_id + ' and ' + userId)
         return response.status(403).json({ message: 'unauthorized file submission!' });
     }
 

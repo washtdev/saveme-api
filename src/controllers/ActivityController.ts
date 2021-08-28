@@ -4,7 +4,7 @@ import aws from "aws-sdk";
 
 import { io } from "../index";
 
-import { ITokenRequest } from "./AuthControllers";
+import { ITokenRequest } from "./AuthController";
 
 import ActivityModel from "../models/ActivityModel";
 import { IActivityModel } from "../models/ActivityModel";
