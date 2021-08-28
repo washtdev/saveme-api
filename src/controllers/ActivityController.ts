@@ -97,7 +97,7 @@ class ActivityController {
 			description,
 			subject,
 			haveFile,
-			url: '',
+			url: haveFile ? '' : undefined,
 			likes: []
 		});
 		
